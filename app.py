@@ -6,7 +6,6 @@ import os
 import tempfile
 
 # Application  
-from dotenv import load_dotenv
 import streamlit as st
 
 # Textual Chains
@@ -25,9 +24,9 @@ from langchain.chains import (
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_community.chat_models import ChatOpenAI
-
 from langchain.retrievers import EnsembleRetriever, BM25Retriever
 
+# NLP & Embeddings
 from transformers import AutoTokenizer, AutoModel
 import torch
 
@@ -37,8 +36,7 @@ import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 
-# Load .env secrets
-load_dotenv()
+# Load API key from environment variable
 secret = os.getenv('OPENAI_API_KEY')
 
 LOG_FILE = "chat_log.csv"
