@@ -39,7 +39,9 @@ nltk.download('averaged_perceptron_tagger')
 # Load API key from environment variable
 secret = os.getenv('OPENAI_API_KEY')
 
-LOG_FILE = "chat_log.csv"
+LOG_DIR = os.path.join(os.getcwd(), "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+LOG_FILE = os.path.join(LOG_DIR, "chat_log.csv")
 
 # --- Logging ---
 def log_interaction(user_input: str, assistant_output: str):
