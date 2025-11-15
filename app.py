@@ -209,6 +209,20 @@ def main():
                 log_interaction(user_input, assistant_response)
             except Exception as e:
                 st.warning(f"⚠️ Logging failed: {e}")
+    
+    # --- Log Download Section ---
+    st.sidebar.markdown("### 📥 Download Logs")
+    if os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "rb") as f:
+            st.sidebar.download_button(
+                label="Download chat_log.csv",
+                data=f,
+                file_name="chat_log.csv",
+                mime="text/csv"
+            )
+    else:
+        st.sidebar.warning("No logs found yet.")
+
 
 if __name__ == '__main__':
     main()
