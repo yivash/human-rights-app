@@ -162,7 +162,7 @@ def main():
         layout="centered"
     )
 
-    st.image("images/ehrc_logo.png", width=100)
+    st.image("images/ehrc_logo.png", width=500)
     st.title("👩‍🏫 AI Coach")
     st.text("⚡Question foreign agency legislation \nwith KOBALIYA AND OTHERS v. RUSSIA court decision.")
 
