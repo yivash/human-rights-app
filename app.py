@@ -162,9 +162,9 @@ def main():
         layout="centered"
     )
 
-    st.image("images/ehrc_logo.png", width=500)
+    st.image("images/ehrc_logo_2.png", width=500)
     st.title("👩‍🏫 AI Coach")
-    st.text("⚡Question foreign agency legislation \nwith KOBALIYA AND OTHERS v. RUSSIA court decision.")
+    st.text("⚡Question foreign agents narrative and legislation in Russia \nwith KOBALIYA AND OTHERS v. RUSSIA court decision.")
 
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
