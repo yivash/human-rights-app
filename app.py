@@ -25,24 +25,63 @@ from langchain_community.retrievers import BM25Retriever
 from transformers import AutoTokenizer, AutoModel
 import torch
 
+from datetime import datetime
+from pathlib import Path
+
+import gspread
+from google.oauth2.service_account import Credentials
 
 load_dotenv()
 secret = os.getenv("OPENAI_API_KEY")
 
-LOG_FILE = "chat_log.csv"
 INDEX_DIR = "indexes/kobaliya_faiss"
 CHUNKS_PATH = "indexes/kobaliya_doc_chunks.pkl"
 
 
+def get_gsheet_worksheet():
+    scopes = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive",
+    ]
+
+    service_account_info = {
+        "type": os.environ["GCP_TYPE"],
+        "project_id": os.environ["GCP_PROJECT_ID"],
+        "private_key_id": os.environ["GCP_PRIVATE_KEY_ID"],
+        "private_key": os.environ["GCP_PRIVATE_KEY"], 
+        "client_email": os.environ["GCP_CLIENT_EMAIL"],
+        "client_id": os.environ["GCP_CLIENT_ID"],
+        "auth_uri": os.environ["GCP_AUTH_URI"],
+        "token_uri": os.environ["GCP_TOKEN_URI"],
+        "auth_provider_x509_cert_url": os.environ["GCP_AUTH_PROVIDER_X509_CERT_URL"],
+        "client_x509_cert_url": os.environ["GCP_CLIENT_X509_CERT_URL"],
+    }
+
+    credentials = Credentials.from_service_account_info(
+        service_account_info,
+        scopes=scopes,
+    )
+
+    client = gspread.authorize(credentials)
+
+    spreadsheet = client.open(os.getenv("GSHEET_NAME"))
+    worksheet = spreadsheet.worksheet(os.getenv("GSHEET_WORKSHEET"))
+
+    return worksheet
+
 def log_interaction(user_input: str, assistant_output: str):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    file_exists = os.path.isfile(LOG_FILE)
 
-    with open(LOG_FILE, mode="a", encoding="utf-8", newline="") as f:
-        writer = csv.writer(f)
-        if not file_exists:
-            writer.writerow(["timestamp", "user_input", "assistant_output"])
-        writer.writerow([timestamp, user_input, assistant_output])
+    worksheet = get_gsheet_worksheet()
+
+    worksheet.append_row(
+        [
+            timestamp,
+            user_input,
+            assistant_output,
+        ],
+        value_input_option="USER_ENTERED",
+    )
 
 
 class LegalBertEmbeddings:
