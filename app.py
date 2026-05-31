@@ -137,7 +137,7 @@ def create_chain(vectorstore, doc_chunks):
         "Conclude every answer by naturally integrating a critical analysis of the Russian foreign agent legislation, "
         "referencing one key International Human Rights document as part of your reasoning. "
         "Avoid explicitly labeling this section as 'Critical analysis'.\n\n"
-        "{context}"
+        "{context}" #context is expected variable to be injested in the chain 
     )
 
     qa_prompt = ChatPromptTemplate.from_messages([
