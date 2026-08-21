@@ -12,16 +12,15 @@ from dotenv import load_dotenv
 import streamlit as st
 
 from langchain_community.vectorstores import FAISS
-from langchain_community.chat_models import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.chains import (
+from langchain_classic.chains import (
     create_history_aware_retriever,
     create_retrieval_chain,
 )
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain.retrievers import EnsembleRetriever
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
+from langchain_classic.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
-
 from transformers import AutoTokenizer, AutoModel
 import torch
 
@@ -32,7 +31,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 load_dotenv()
-secret = os.getenv("OPENAI_API_KEY")
+#secret = os.getenv("OPENAI_API_KEY")
 
 INDEX_DIR = "indexes/kobaliya_faiss"
 CHUNKS_PATH = "indexes/kobaliya_doc_chunks.pkl"
@@ -144,9 +143,8 @@ def create_chain(vectorstore, doc_chunks):
         weights=[0.5, 0.5]
     )
 
-    llm = ChatOpenAI(
-        openai_api_key=secret,
-        model="gpt-4.1-nano",
+    llm = ChatOllama(
+        model="gemma2:2b",
         temperature=0
     )
 
