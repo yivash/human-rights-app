@@ -241,10 +241,10 @@ def main():
                 "content": assistant_response
             })
 
-            # try:
-            #     log_interaction(user_input, assistant_response)
-            # except Exception as e:
-            #     st.warning(f"⚠️ Logging failed: {e}")
+            try:
+                log_interaction(user_input, assistant_response)
+            except Exception as e:
+                st.warning(f"⚠️ Logging failed: {e}")
 
 
 if __name__ == "__main__":
